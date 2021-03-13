@@ -91,6 +91,14 @@ angular.module("firePokerApp", ["firebase", "ngCookies"]).config(["$routeProvide
         return b.game && b.game.participants && angular.forEach(b.game.participants, function (b) {
             b.online === !0 && a++
         }), a
+    }, b.totalOfPoint = function () {
+        var a = 0;
+        return b.game && b.game.stories && angular.forEach(b.game.stories, function (b) {
+            console.log(b);
+            if (b.points !== undefined && b.points !== 0) {
+                a = (a + parseFloat(b.points))
+            }
+        }), a
     }, b.acceptRound = function () {
         b.game.estimate.points = b.newEstimate.points, b.game.estimate.endedAt = (new Date).getTime(), b.game.estimate.status = "closed", b.game.stories[b.game.estimate.id] = angular.copy(b.game.estimate), b.game.estimate = !1, angular.forEach(b.game.participants, function (a) {
             a.hasVoted = !1

@@ -286,3 +286,11 @@ div:focus, div:focus:hover, span:focus, span:focus:hover {
     background-color: #FB6200;
     border-color: #FB6200
 }
+
+.estimated {
+    font-size: 14px
+}
+
+.title {
+    font-size: 16px
+}

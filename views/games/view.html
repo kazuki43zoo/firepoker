@@ -1,13 +1,19 @@
 <div class="row" ng-show="game">
   <div class="col-md-8">
     <!-- Estimated stories -->
+    <div class="well">
+      <h4>{{game.name}}</h4>
+      <p>{{game.description}}</p>
+      <p class="text-right">Total Estimated: <span class="label label-danger estimated">{{totalOfPoint()}}</span></p>
+    </div>
     <div ng-repeat="story in game.stories | orderBy:'endedAt'" class="stories">
       <div ng-show="story.status == 'closed'" class="bordered">
-        <p class="text-right">Estimated: <span class="label label-danger">{{story.points || 'N/A'}}</span></p>
-        <h5 ng-bind-html-unsafe="story.title"></h5>
+        <h5 class="title" ng-bind-html-unsafe="story.title"></h5>
         <p ng-bind-html-unsafe="story.notes"></p>
+        <p class="text-right">Estimated: <span class="label label-danger estimated">{{story.points || 'N/A'}}</span></p>
       </div>
     </div>
+
     <!-- Estimate story -->
     <div ng-show="game.estimate">
       <!-- Story -->
@@ -15,15 +21,12 @@
         <p class="text-right">
           <span class="label label-success">CURRENT</span>
         </p>
-        <h5><span ng-model="game.estimate.title" contenteditable="true" no-line-breaks="true">{{game.estimate.title}}</span></h5>
+        <h5><span class="title" ng-model="game.estimate.title" contenteditable="true" no-line-breaks="true">{{game.estimate.title}}</span></h5>
         <p><span ng-model="game.estimate.notes" contenteditable="true" placeholder="Click to enter notes or description...">{{game.estimate.notes}}</span></p>
       </div>
       <!-- Estimates -->
-      <div class="well">
-        <div ng-hide="game.estimate.results">
-          <p class="text-center text-muted">Select your estimate</p>
-        </div>
-        <div id="estimate-results" ng-show="game.estimate.results">
+      <div class="well" ng-show="game.estimate.results">
+        <div id="estimate-results">
           <ul class="list-inline">
             <li ng-repeat="result in game.estimate.results" class="list-item">
               <div ng-show="showCards || result.user.id == fp.user.id" class="card text-center" href="#">{{result.points}}</div>
@@ -41,6 +44,7 @@
       </div>
       <!-- Card deck -->
       <div ng-show="showCardDeck" class="well well-sm">
+        <p class="text-center text-muted">Select your estimate </p>
         <ul class="list-inline">
           <li ng-repeat="card in decks[game.deck]"><a class="btn btn-default" href="" ng-click="estimate(card)">{{card}}</a></li>
         </ul>
@@ -71,8 +75,7 @@
     <div ng-show="isOwner">
       <ul class="nav nav-tabs">
         <li><a href="#free-form" data-toggle="tab">Free-form</a></li>
-        <li class="active"><a href="#structured" data-toggle="tab">Structured</a></li>
-        <li><a href="#story-list" data-toggle="tab">Story list</a>
+        <li class="active"><a href="#story-list" data-toggle="tab">Story list</a>
       </li></ul>
       <div class="tab-content">
         <div class="tab-pane" id="free-form">
@@ -90,29 +93,7 @@
              or <a href="#">Cancel</a>
           </form>
         </div>
-        <div class="tab-pane active" id="structured">
-          <form name="formStructured" ng-submit="createStory('structured')" novalidate="">
-            <div class="form-group">
-              <label for="structured-story-as-a-an">As a/an...</label>
-              <input ng-model="newStory.asA" type="text" class="form-control" id="structured-story-as-a-an" required="">
-            </div>
-            <div class="form-group">
-              <label for="structured-story-i-would-like-to">I would like to...</label>
-              <input ng-model="newStory.iWouldLikeTo" type="text" class="form-control" id="structured-story-i-would-like-to" required="">
-            </div>
-            <div class="form-group">
-              <label for="structured-story-so-that">So that...</label>
-              <input ng-model="newStory.soThat" type="text" class="form-control" id="structured-story-so-that" required="">
-            </div>
-            <div class="form-group">
-              <label for="structured-story-notes">Notes</label>
-              <textarea ng-model="newStory.notes" class="form-control" id="structured-story-notes" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-success" ng-disabled="formStructured.$invalid">Add story</button>
-             or <a href="#">Cancel</a>
-          </form>
-        </div>
-        <div class="tab-pane" id="story-list">
+        <div class="tab-pane active" id="story-list">
           <div ng-show="game.stories">
             <ul ng-show="unestimatedStoriesCount" class="list-unstyled">
               <li ng-repeat="story in game.stories" ng-show="story.status == 'queue'">
@@ -151,17 +132,14 @@
         </ul>
       </div>
       -->
-      <div>
-        <h4>{{game.name}}</h4>
-        <p>{{game.description}}</p>
-      </div>
       <div class="vspace">
         <h5>Participants ({{totalOfOnlineParticipants()}})</h5>
         <ul class="list-unstyled">
           <li ng-repeat="participant in game.participants" ng-show="participant.online == true">
             {{participant.fullname}}
+            <span ng-show="participant.id == fp.user.id" class="glyphicon glyphicon-user"></span>
             <span ng-show="participant.id == game.owner.id">(moderator)</span>
-			      <span ng-show="participant.hasVoted == true" class="glyphicon glyphicon-ok text-success"></span>
+            <span ng-show="participant.hasVoted == true" class="glyphicon glyphicon-ok text-success"></span>
           </li>
         </ul>
       </div>
