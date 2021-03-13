@@ -108,7 +108,7 @@ angular.module("firePokerApp", ["firebase", "ngCookies"]).config(["$routeProvide
         }
     }, b.revealCards = function () {
         b.game.estimate.status = "reveal"
-    }, b.decks = [[0, "½", 1, 2, 3, 5, 8, 13, 20, 40, 100, "?"], [0, "½", 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, "?"], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "?"], [0, 4, 8, 16, 24, 32, 40, 60, 80, '?'], ["XXS", "XS", "S", "M", "L", "XL", "XXL", "?"]], b.newGame = {deck: 0}, b.showCardDeck = !0, b.showSelectEstimate = !1, b.disablePlayAgainAndRevealButtons = !1, b.showCards = !1, b.setShowCardDeck = function () {
+    }, b.decks = [[0, "½", 1, 2, 3, 5, 8, 13, 20, 40, 100, "?"], [0, "½", 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, "?"], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "?"], [0, 4, 8, 16, 24, 32, 40, 60, 80, '?'], [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, '?'], ["XXS", "XS", "S", "M", "L", "XL", "XXL", "?"]], b.newGame = {deck: 0}, b.showCardDeck = !0, b.showSelectEstimate = !1, b.disablePlayAgainAndRevealButtons = !1, b.showCards = !1, b.setShowCardDeck = function () {
         b.showCardDeck = !0, b.game.estimate && b.game.estimate.results && angular.forEach(b.game.estimate.results, function (a) {
             a && a.user && a.user.id && a.user.id === b.fp.user.id && (b.showCardDeck = !1)
         })
