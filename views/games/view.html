@@ -74,8 +74,8 @@
     <!-- Create story -->
     <div ng-show="isOwner">
       <ul class="nav nav-tabs">
-        <li><a href="#free-form" data-toggle="tab">Free-form</a></li>
-        <li class="active"><a href="#story-list" data-toggle="tab">Story list</a>
+        <li><a href="#free-form" data-toggle="tab">Input Form</a></li>
+        <li class="active"><a href="#story-list" data-toggle="tab">Story List</a>
       </li></ul>
       <div class="tab-content">
         <div class="tab-pane" id="free-form">
@@ -83,7 +83,6 @@
             <div class="form-group">
               <label for="free-form-story-title">Story</label>
               <textarea ng-model="newStory.title" class="form-control" id="free-form-story-title" rows="3" required=""></textarea>
-              <p class="help-block">Type or copy and paste your story as free-form text.</p>
             </div>
             <div class="form-group">
               <label for="free-form-story-notes">Notes</label>
@@ -98,9 +97,12 @@
             <ul ng-show="unestimatedStoriesCount" class="list-unstyled">
               <li ng-repeat="story in game.stories" ng-show="story.status == 'queue'">
                 <div class="pull-right">
-                  <a href="" ng-click="deleteStory($index)"><span class="glyphicon glyphicon-trash"></span></a>
+                  <a href="" ng-click="deleteStory($index)" class="btn btn-danger">Delete</a>
                 </div>
-                <a href="" ng-click="setStory($index)">{{story.title}}</a>
+                <div class="pull-right">
+                  <a href="" ng-click="setStory($index)" class="btn btn-success">Start</a>
+                </div>
+                <span class="title">{{story.title}}</span>
                 <p>{{story.notes}}</p>
                 <hr ng-show="unestimatedStoriesCount > 1 && !$last">
               </li>
@@ -111,9 +113,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="vspace">
-      <p>Project built with <a href="http://www.firebase.com" target="_blank">Firebase</a> and <a href="http://www.angularjs.org/" target="_blank">AngularJS</a> at <a href="http://www.wizehive.com/" target="_blank">WizeHive</a>.</p>
     </div>
   </div>
   <div class="col-md-4">
@@ -138,7 +137,7 @@
           <li ng-repeat="participant in game.participants" ng-show="participant.online == true">
             {{participant.fullname}}
             <span ng-show="participant.id == fp.user.id" class="glyphicon glyphicon-user"></span>
-            <span ng-show="participant.id == game.owner.id">(moderator)</span>
+            <span ng-show="participant.id == game.owner.id">(Owner)</span>
             <span ng-show="participant.hasVoted == true" class="glyphicon glyphicon-ok text-success"></span>
           </li>
         </ul>
