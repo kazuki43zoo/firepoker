@@ -1,16 +1,14 @@
 <div class="row" ng-show="game">
   <div class="col-md-8">
     <!-- Estimated stories -->
-    <div class="well">
-      <h4>{{game.name}}</h4>
-      <p>{{game.description}}</p>
-      <p class="text-right">Total Estimated: <span class="label label-danger estimated">{{totalOfPoint()}}</span></p>
-    </div>
     <div ng-repeat="story in game.stories | orderBy:'endedAt'" class="stories">
       <div ng-show="story.status == 'closed'" class="bordered">
         <h5 class="title" ng-bind-html-unsafe="story.title"></h5>
         <p ng-bind-html-unsafe="story.notes"></p>
-        <p class="text-right">Estimated: <span class="label label-danger estimated">{{story.points || 'N/A'}}</span></p>
+        <p class="text-right">
+          Estimated: <span class="label label-danger estimated">{{story.points || 'N/A'}}</span>
+          <a href="" ng-click="retryStory(story.id)" class="text-left btn btn-default" ng-show="isOwner">Retry</a>
+        </p>
       </div>
     </div>
 
@@ -72,13 +70,13 @@
       <span ng-show="isOwner">Add or select a story to start a new round.</span>
     </div>
     <!-- Create story -->
-    <div ng-show="isOwner">
+    <div>
       <ul class="nav nav-tabs">
-        <li><a href="#free-form" data-toggle="tab">Input Form</a></li>
+        <li ng-show="isOwner"><a href="#free-form" data-toggle="tab">Input Form</a></li>
         <li class="active"><a href="#story-list" data-toggle="tab">Story List</a>
       </li></ul>
       <div class="tab-content">
-        <div class="tab-pane" id="free-form">
+        <div class="tab-pane" id="free-form" ng-show="isOwner">
           <form name="formFreeForm" ng-submit="createStory('free-form')">
             <div class="form-group">
               <label for="free-form-story-title">Story</label>
@@ -96,10 +94,10 @@
           <div ng-show="game.stories">
             <ul ng-show="unestimatedStoriesCount" class="list-unstyled">
               <li ng-repeat="story in game.stories" ng-show="story.status == 'queue'">
-                <div class="pull-right">
+                <div class="pull-right" ng-show="isOwner">
                   <a href="" ng-click="deleteStory($index)" class="btn btn-danger">Delete</a>
                 </div>
-                <div class="pull-right">
+                <div class="pull-right" ng-show="isOwner">
                   <a href="" ng-click="setStory($index)" class="btn btn-success">Start</a>
                 </div>
                 <span class="title">{{story.title}}</span>
@@ -117,20 +115,21 @@
   </div>
   <div class="col-md-4">
     <div class="affix">
-      <!--
-      <div class="btn-group pull-right">
-        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-          <span class="glyphicon glyphicon-cog"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li class="divider"></li>
-          <li><a href="#" ng-click="logout()">Logout</a></li>
-        </ul>
+      <div>
+        <div class="pull-left">
+          <strong>Hi {{fp.user.fullname}}!</strong>
+        </div>
+        <div class="pull-right">
+          <a href="#" class="btn-sm btn-primary" ng-click="logout()">Logout</a>
+        </div>
       </div>
-      -->
+      <div class="vspace">
+        <div class="well">
+          <h4>{{game.name}}</h4>
+          <p>{{game.description}}</p>
+          <p class="text-left">Total Estimated: <span class="label label-danger estimated">{{totalOfPoint()}}</span></p>
+        </div>
+      </div>
       <div class="vspace">
         <h5>Participants ({{totalOfOnlineParticipants()}})</h5>
         <ul class="list-unstyled">

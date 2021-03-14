@@ -55,13 +55,11 @@ angular.module("firePokerApp", ["firebase", "ngCookies"]).config(["$routeProvide
     }, b.setNewGame = function (a) {
         i.child("/games/" + e.gid).set(a)
     }, b.createStory = function (a) {
-        if ("structured" === a) {
-            var c = "As a/an " + b.newStory.asA + " I would like to " + b.newStory.iWouldLikeTo + " so that " + b.newStory.soThat;
-            b.newStory.title = c, delete b.newStory.asA, delete b.newStory.iWouldLikeTo, delete b.newStory.soThat
-        }
         b.showCardDeck = !0, b.newStory.results = !1, b.newStory.points = 0, b.newStory.status = "queue", b.newStory.startedAt = !1, b.newStory.endedAt = !1, b.game.stories || (b.game.stories = []), b.game.stories.push(b.newStory), b.newStory = null, b.game.estimate || b.setStory(b.game.stories.length - 1)
     }, b.setStory = function (a) {
         b.cancelRound(), b.game.estimate = b.game.stories[a], b.game.estimate.status = "active", b.game.estimate.id = a, b.game.estimate.startedAt = (new Date).getTime(), b.game.estimate.endedAt = !1, b.showCardDeck = !0
+    }, b.retryStory = function (a) {
+        b.cancelRound(), b.game.stories[a].points = 0, b.setStory(a), b.playAgain()
     }, b.deleteStory = function (a) {
         b.game.stories.splice(a, 1)
     }, b.estimate = function (a) {
@@ -94,7 +92,6 @@ angular.module("firePokerApp", ["firebase", "ngCookies"]).config(["$routeProvide
     }, b.totalOfPoint = function () {
         var a = 0;
         return b.game && b.game.stories && angular.forEach(b.game.stories, function (b) {
-            console.log(b);
             if (b.points !== undefined && b.points !== 0) {
                 a = (a + parseFloat(b.points))
             }
